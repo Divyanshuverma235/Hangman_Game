@@ -1,0 +1,52 @@
+import random
+
+# List of words to choose from
+word_list = ['python', 'hangman', 'programming', 'developer', 'challenge']
+
+def choose_word():
+    """Select a random word from the list."""
+    return random.choice(word_list)
+
+def display_word(word, guessed_letters):
+    """Display the current state of the word, showing guessed letters and hiding others."""
+    return ' '.join(letter if letter in guessed_letters else '_' for letter in word)
+
+def hangman():
+    word = choose_word()
+    guessed_letters = set()
+    incorrect_guesses = 0
+    max_incorrect_guesses = 6  # Number of allowed incorrect guesses
+
+    print("Welcome to Hangman!")
+    print("Try to guess the word.")
+    
+    while incorrect_guesses < max_incorrect_guesses:
+        print("\n" + display_word(word, guessed_letters))
+        print(f"Incorrect guesses remaining: {max_incorrect_guesses - incorrect_guesses}")
+        
+        guess = input("Guess a letter: ").lower()
+        
+        if len(guess) != 1 or not guess.isalpha():
+            print("Please enter a single letter.")
+            continue
+        
+        if guess in guessed_letters:
+            print("You've already guessed that letter.")
+            continue
+        
+        guessed_letters.add(guess)
+        
+        if guess in word:
+            print(f"Good guess! The letter '{guess}' is in the word.")
+        else:
+            incorrect_guesses += 1
+            print(f"Sorry, the letter '{guess}' is not in the word.")
+        
+        if set(word) <= guessed_letters:
+            print("\nCongratulations! You've guessed the word:", word)
+            break
+    else:
+        print(f"\nGame over! The word was: {word}")
+
+if __name__ == "__main__":
+    hangman()
